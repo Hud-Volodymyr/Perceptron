@@ -6,7 +6,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import java.lang.NumberFormatException
 import kotlin.math.abs
 
 class MainActivity : AppCompatActivity() {
@@ -49,24 +48,24 @@ class MainActivity : AppCompatActivity() {
             error("Learning speed must be in set of [0.001, 0.01, 0.05, 0.1, 0.2, 0.3]")
         }
 
-        if (deadline.isBlank()) {
-            error("Please enter deadline")
+        if (maxIterations.isBlank() && deadline.isBlank()) {
+            error("Please enter a number of either a deadline or of iterations")
         }
-        timeDeadline = deadline.toFloat()
 
-        if (timeDeadline !in listOf(0.5F, 1F, 2F, 5F)) {
-            error("Deadline must be in set of [0.5, 1, 2, 5]")
+        timeDeadline = if(deadline.isBlank()) 0f else deadline.toFloat()
+
+        if (timeDeadline !in listOf(0f, 0.5F, 1F, 2F, 5F)) {
+            error("Deadline must be in set of [0, 0.5, 1, 2, 5]")
         }
 
         timeDeadline *= 1000
+        iterations = if (maxIterations.isBlank()) 0 else maxIterations.toInt()
 
-        if (maxIterations.isBlank()) {
-            error("Please enter a number of iterations")
+        if (iterations == 0 && timeDeadline == 0f) {
+            error("Either iterations or time deadline must be greater than 0")
         }
-        iterations = maxIterations.toInt()
-
-        if (iterations !in listOf(100, 200, 500, 1000)) {
-            error("Iterations must be in set of [100, 200, 500, 1000]")
+        if (iterations !in listOf(0, 100, 200, 500, 1000)) {
+            error("Iterations must be in set of [0, 100, 200, 500, 1000]")
         }
     }
 
@@ -77,9 +76,16 @@ class MainActivity : AppCompatActivity() {
         var resultNum = 0
         val n = points.size
         val startTime = System.currentTimeMillis()
-        while (i < iterations && resultNum < n) {
+        while (resultNum < n) {
             val time = System.currentTimeMillis()
-            if (time - startTime > timeDeadline) return "Time deadline exceeded\nW1 = $w1, W2 = $w2 \n iterations to find result: $i"
+            if (iterations > 0) {
+                if (i > iterations) return "Iterations count exceeded\nW1 = $w1, W2 = $w2"
+            }
+            if (timeDeadline > 0) {
+                if (time - startTime > timeDeadline) {
+                    return "Time deadline exceeded\nW1 = $w1, W2 = $w2 \n iterations to find result: $i"
+                }
+            }
             val currentPoint = points[i % n]
             val diff = getDiff(currentPoint, w1, w2)
             if (currentPoint.second == threshold) {
