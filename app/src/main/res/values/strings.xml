@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">perceptron</string>
+    <string name="learning_speed">Enter learning speed</string>
+    <string name="iterations">Enter number of iterations</string>
+    <string name="time_deadline">Enter time deadline</string>
+    <string name="train">Train perceptron</string>
+</resources>

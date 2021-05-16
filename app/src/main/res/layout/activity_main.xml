@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <EditText
+        android:id="@+id/learning_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/learning_speed"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toTopOf="@+id/iterations"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/iterations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/iterations"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toTopOf="@+id/deadline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/deadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/time_deadline"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toTopOf="@+id/train"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/train"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/train"
+        app:layout_constraintBottom_toTopOf="@+id/result"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        tools:text="Result"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
