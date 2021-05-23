@@ -1,12 +1,15 @@
 package com.example.perceptron
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import kotlin.math.abs
+import kotlin.math.truncate
 
 class MainActivity : AppCompatActivity() {
     private var learningSpeed = 0f
@@ -20,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         Float.POSITIVE_INFINITY,
     )
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -69,21 +73,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun train(): String {
         var w1 = 0F
         var w2 = 0F
         var i = 0
         var resultNum = 0
         val n = points.size
-        val startTime = System.currentTimeMillis()
+        val startTime = System.nanoTime()
         while (resultNum < n) {
-            val time = System.currentTimeMillis()
+            val time = System.nanoTime()
             if (iterations > 0) {
-                if (i > iterations) return "Iterations count exceeded\nW1 = $w1, W2 = $w2"
+                if (i > iterations) return "Iterations count exceeded\nW1 = $w1, W2 = $w2\n" +
+                        "Time spent: ${truncate(((time - startTime) / 1000).toDouble())}mcs"
             }
             if (timeDeadline > 0) {
                 if (time - startTime > timeDeadline) {
-                    return "Time deadline exceeded\nW1 = $w1, W2 = $w2 \n iterations to find result: $i"
+                    return "Time deadline exceeded\nW1 = $w1, W2 = $w2 \n iterations to find result: $i\nTime spent: ${truncate(((time - startTime) / 1000).toDouble())}mcs"
                 }
             }
             val currentPoint = points[i % n]
@@ -96,7 +102,8 @@ class MainActivity : AppCompatActivity() {
                     resultNum = 0
                     if (w1 in illegalValues || w2 in illegalValues) {
                         error("Solution could not be found\n"
-                                + "Number of iterations: $i")
+                                + "Number of iterations: $i\n" +
+                                "Time spent: ${truncate(((time - startTime) / 1000).toDouble())}mcs")
                     }
                 } else {
                     ++resultNum
@@ -109,7 +116,8 @@ class MainActivity : AppCompatActivity() {
                     resultNum = 0
                     if (w1 in illegalValues || w2 in illegalValues) {
                         error("Solution could not be found\n" +
-                                "Number of iterations: $i")
+                                "Number of iterations: $i\n" +
+                                "Time spent: ${truncate(((time - startTime) / 1000).toDouble())}mcs")
                     }
                 } else {
                     ++resultNum
@@ -122,7 +130,8 @@ class MainActivity : AppCompatActivity() {
                     resultNum = 0
                     if (w1 in illegalValues || w2 in illegalValues) {
                         error("Solution could not be found"
-                                + "Number of iterations: $i")
+                                + "Number of iterations: $i\n" +
+                                "Time spent: ${truncate(((time - startTime) / 1000).toDouble())}mcs")
                     }
                 } else {
                     ++resultNum
@@ -130,7 +139,8 @@ class MainActivity : AppCompatActivity() {
             }
             ++i
         }
-        return "Successfully completed the training\nW1 = $w1, W2 = $w2 \n iterations to find result: $i"
+        return "Successfully completed the training\nW1 = $w1, W2 = $w2 \n iterations to find result: $i\n" +
+                "Time spent: ${truncate(((System.nanoTime() - startTime) / 1000).toDouble())}mcs"
     }
 
     private fun getDiff(point: Pair<Float, Float>, w1: Float, w2: Float): Float {
